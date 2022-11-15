@@ -1,6 +1,10 @@
 import express from "express";
 import { UserModel } from "../../database/allModels";
 import passport from "passport";
+import {
+    validateId,
+    validatePassword,
+} from "../../validation/common.validation";
 
 const Router = express.Router();
 
@@ -65,7 +69,9 @@ Router.put(
             const { _id } = req.params;
             const { userData } = req.body;
 
-            // Task: Validate User Data
+            // Task: Validate User Data-Done
+            await validateId(req.params);
+            await validatePassword(req.body);
 
             userData.password = undefined;
 
