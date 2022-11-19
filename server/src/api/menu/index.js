@@ -12,20 +12,20 @@ const Router = express.Router();
  * Method    GET
  */
 Router.get("/list/:_id", async (req, res) => {
-    try {
-        const { _id } = req.params;
-        const menus = await MenuModel.findById(_id);
+  try {
+    const { _id } = req.params;
+    const menus = await MenuModel.findById(_id);
 
-        if (!menus) {
-            return res
-                .status(404)
-                .json({ error: "No menu present for this restaurant" });
-        }
-
-        return res.json({ menus });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
+    if (!menus) {
+      return res
+        .status(404)
+        .json({ error: "No menu present for this restaurant" });
     }
+
+    return res.json({ menus });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 /**
@@ -36,19 +36,19 @@ Router.get("/list/:_id", async (req, res) => {
  * Method    GET
  */
 Router.get("/image/:_id", async (req, res) => {
-    try {
-        const { _id } = req.params;
+  try {
+    const { _id } = req.params;
 
-        const menuImages = await ImageModel.findById(_id);
+    const menuImages = await ImageModel.findById(_id);
 
-        if (!menuImages) {
-            return res.status(404).json({ message: "No menu images found." });
-        }
-
-        return res.json({ menuImages });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
+    if (!menuImages) {
+      return res.status(404).json({ message: "No menu images found." });
     }
+
+    return res.json({ menuImages });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 export default Router;

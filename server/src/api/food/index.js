@@ -2,8 +2,8 @@ import express from "express";
 
 import { FoodModel } from "../../database/allModels";
 import {
-    validateCategory,
-    validateId,
+  validateCategory,
+  validateId,
 } from "../../validation/common.validation";
 
 const Router = express.Router();
@@ -16,12 +16,12 @@ const Router = express.Router();
  * Method    POST
  */
 Router.post("/", async (req, res) => {
-    try {
-        const food = await FoodModel.create(req.body.foodItem);
-        return res.status(200).json({ food });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
+  try {
+    const food = await FoodModel.create(req.body.foodItem);
+    return res.status(200).json({ food });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 })
 
 /**
@@ -32,16 +32,16 @@ Router.post("/", async (req, res) => {
  * Method    GET
  */
 Router.get("/:_id", async (req, res) => {
-    try {
-        const { _id } = req.params;
+  try {
+    const { _id } = req.params;
 
-        await validateId(req.params);
+    await validateId(req.params);
 
-        const food = await FoodModel.findById(_id);
-        return res.json({ food });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
+    const food = await FoodModel.findById(_id);
+    return res.json({ food });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 /**
@@ -52,21 +52,20 @@ Router.get("/:_id", async (req, res) => {
  * Method    GET
  */
 Router.get("/r/:_id", async (req, res) => {
-    try {
-        const { _id } = req.params;
+  try {
+    const { _id } = req.params;
 
-        await validateId(req.params);
+    await validateId(req.params);
 
-        const foods = await FoodModel.find({
-            restaurant: _id,
-        });
+    const foods = await FoodModel.find({
+      restaurant: _id,
+    });
 
-        // task: food not found return stmt
 
-        return res.json({ foods });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
+    return res.json({ foods });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 /**
@@ -77,24 +76,22 @@ Router.get("/r/:_id", async (req, res) => {
  * Method    GET
  */
 Router.get("/c/:category", async (req, res) => {
-    try {
-        const { category } = req.params;
-        await validateCategory(req.params);
-        const foods = await FoodModel.find({
-            category: { $regex: category, $options: "i" },
-        });
+  try {
+    const { category } = req.params;
+    await validateCategory(req.params);
+    const foods = await FoodModel.find({
+      category: { $regex: category, $options: "i" },
+    });
 
-        if (!foods)
-            return res
-                .status(404)
-                .json({ error: `No food matched with ${category}` });
+    if (!foods)
+      return res
+        .status(404)
+        .json({ error: `No food matched with ${category}` });
 
-        return res.json({ foods });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
+    return res.json({ foods });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
-
-
 
 export default Router;
